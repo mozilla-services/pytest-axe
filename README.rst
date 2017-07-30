@@ -29,7 +29,7 @@ To install pytest-axe:
 
 .. code-block:: bash
 
-  $ pip install -i https://testpypi.python.org/pypi pytest-axe
+  $ pip install pytest-axe
 
 Usage
 -----
