@@ -43,7 +43,7 @@ To run tests using pytest-selenium (a dependency of axe-selenium-python), tests 
 
 Test suites using axe-selenium-python must import pytest and the Axe class.
 
-pytest-selenium relies on the `**base_url** <https://github.com/pytest-dev/pytest-base-url>`_ fixture, which can be set in a configuration file, or as a command line argument.
+pytest-selenium relies on the `base_url <https://github.com/pytest-dev/pytest-base-url>`_ fixture, which can be set in a configuration file, or as a command line argument.
 
 Configuration File
 ******************
