@@ -7,19 +7,24 @@ from setuptools import setup
 
 def readme():
     with open('README.rst') as f:
-        return f.read()
+        readme = f.read()
+    with open('CHANGELOG.rst') as f:
+        log = f.read()
+    return readme + '\n\n' + log
 
-setup(name='axe_selenium_python',
-    version='0.0.1',
-    description='pytest plugin for Selenium/aXe integration',
-    # long_description=readme(),
+setup(name='pytest-axe',
+    version='0.0.17',
+    description='pytest fixture for axe-selenium-python',
+    long_description=readme(),
     url='http://github.com/kimberlythegeek/pytest-axe',
     author='Kimberly Pennington',
     author_email='kpennington@mozilla.com',
-    packages=['axe_selenium_python'],
+    packages=['pytest_axe'],
     install_requires=[
         'pytest-selenium>=1.10.0',
-        'pytest>=3.1.1'
+        'pytest>=3.1.1',
+        'axe_selenium_python'
     ],
+    entry_points={'pytest11': ['axe = pytest_axe.pytest_axe']},
     license='Mozilla Public License 2.0 (MPL 2.0)',
     keywords='axe-core selenium pytest-selenium accessibility automation mozilla')

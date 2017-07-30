@@ -5,3 +5,7 @@ dist/
 *.egg
 __pycache__
 *.json
+*.log
+*.html
+.tox
+update.sh
