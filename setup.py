@@ -13,8 +13,8 @@ def readme():
     return readme + '\n\n' + log
 
 setup(name='pytest-axe',
-    version='0.0.173',
-    description='pytest fixture for axe-selenium-python',
+    version='0.2.0',
+    description='pytest plugin for axe-selenium-python',
     long_description=readme(),
     url='http://github.com/kimberlythegeek/pytest-axe',
     author='Kimberly Pennington',
