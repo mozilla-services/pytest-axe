@@ -38,7 +38,7 @@ def pytest_collection_modifyitems(config, items):
 
 
 def run_axe(page, context=None, options=None, impact=None):
-    print("\nrun_axe: impact=%s" % impact)
+    print("\n\n------------------\n\nrun_axe: impact=%s" % impact)
     axe = PytestAxe(page.selenium)
     axe.analyze()
 
@@ -50,6 +50,9 @@ class PytestAxe(Axe):
         self.context = context
         self.options = options
         self.impact = impact
+        print("\n\n------------------\n\n__init__: self.impact=%s" % self.impact)
+        print("\n\n------------------\n\n__init__: impact=%s" % impact)
+
 
     def get_rules(self):
         """Return array of accessibility rules."""
@@ -58,6 +61,7 @@ class PytestAxe(Axe):
 
     def run(self):
         """Inject aXe, run against current page, and return rules & violations."""
+        print("\n\n------------------\n\nrun: self.impact=%s" % self.impact)
         self.inject()
         data = self.execute(self.context, self.options)
         violations = dict((rule['id'], rule) for rule in data['violations'] if self.impact_included(rule))
@@ -66,6 +70,7 @@ class PytestAxe(Axe):
 
     def impact_included(self, rule):
         """Filter violations with specified impact level or higher."""
+        print("\n\n------------------\n\nimpact_included: self.impact=%s" % self.impact)
         impact = self.impact
         if impact == 'minor' or impact is None:
             return True
@@ -80,6 +85,7 @@ class PytestAxe(Axe):
 
     def analyze(self):
         """Run aXe accessibility checks, and write results to file."""
+        print("\n\n------------------\n\nanalyze: self.impact=%s" % self.impact)
         disabled = environ.get('ACCESSIBILITY_DISABLED')
         if not disabled or disabled is None:
             violations = self.run()
