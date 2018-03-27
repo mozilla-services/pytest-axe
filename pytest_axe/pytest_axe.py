@@ -2,7 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import re
+import time
+from os import environ
+
 import pytest
+
 from axe_selenium_python import Axe
 
 
@@ -12,9 +17,11 @@ def axe(selenium, base_url):
     selenium.get(base_url)
     yield Axe(selenium)
 
+
 def pytest_addoption(parser):
     parser.addoption("--axe", action="store_true", default=False,
                      help="run accessibility tests only")
+
 
 def pytest_collection_modifyitems(config, items):
     if config.getoption("--axe"):
@@ -29,6 +36,12 @@ def pytest_collection_modifyitems(config, items):
         if "accessibility" in item.keywords:
             item.add_marker(skip_a11y)
 
+
+def run_axe(page):
+    axe = Axe(page.selenium)
+    axe.analyze()
+
+
 class PytestAxe(Axe):
 
     def __init__(self, selenium):
@@ -40,9 +53,7 @@ class PytestAxe(Axe):
         return response
 
     def run(self, context=None, options=None, impact=None):
-        """
-        Inject aXe, run against current page, and return rules & violations.
-        """
+        """Inject aXe, run against current page, and return rules & violations."""
         self.inject()
         data = self.execute(context, options)
         violations = dict((rule['id'], rule) for rule in data['violations'] if self.impact_included(rule, impact))
@@ -50,10 +61,7 @@ class PytestAxe(Axe):
         return violations
 
     def impact_included(self, rule, impact):
-        """
-        Function to filter for violations with specified impact level, and all
-        violations with a higher impact level.
-        """
+        """Filter violations with specified impact level or higher."""
         if impact == 'minor' or impact is None:
             return True
         elif impact == 'serious':

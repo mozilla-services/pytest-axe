@@ -5,12 +5,14 @@
 
 from setuptools import setup
 
+
 def readme():
     with open('./README.rst') as f:
         readme = f.read()
     with open('./CHANGELOG.rst') as f:
         log = f.read()
     return readme + '\n\n' + log
+
 
 setup(name='pytest-axe',
     version='0.2.3',
