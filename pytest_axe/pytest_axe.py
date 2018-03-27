@@ -38,6 +38,7 @@ def pytest_collection_modifyitems(config, items):
 
 
 def run_axe(page, context=None, options=None, impact=None):
+    print("\nrun_axe: impact=%s", impact)
     axe = PytestAxe(page.selenium)
     axe.analyze()
 
