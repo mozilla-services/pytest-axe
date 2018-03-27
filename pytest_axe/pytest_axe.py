@@ -15,7 +15,7 @@ from axe_selenium_python import Axe
 def axe(selenium, base_url):
     """Return an Axe instance based on context and options."""
     selenium.get(base_url)
-    yield Axe(selenium)
+    yield PytestAxe(selenium)
 
 
 def pytest_addoption(parser):
@@ -37,14 +37,14 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(skip_a11y)
 
 
-def run_axe(page):
-    axe = Axe(page.selenium)
+def run_axe(page, context=None, options=None, impact=None):
+    axe = PytestAxe(page.selenium)
     axe.analyze()
 
 
 class PytestAxe(Axe):
 
-    def __init__(self, selenium):
+    def __init__(self, selenium, script_url=None):
         super(PytestAxe, self).__init__(selenium)
 
     def get_rules(self):
