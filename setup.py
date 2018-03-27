@@ -6,14 +6,14 @@
 from setuptools import setup
 
 def readme():
-    with open('README.rst') as f:
+    with open('./README.rst') as f:
         readme = f.read()
-    with open('CHANGELOG.rst') as f:
+    with open('./CHANGELOG.rst') as f:
         log = f.read()
     return readme + '\n\n' + log
 
 setup(name='pytest-axe',
-    version='0.2.0',
+    version='0.2.3',
     description='pytest plugin for axe-selenium-python',
     long_description=readme(),
     url='http://github.com/kimberlythegeek/pytest-axe',
@@ -23,7 +23,7 @@ setup(name='pytest-axe',
     install_requires=[
         'pytest-selenium>=1.10.0',
         'pytest>=3.1.1',
-        'axe_selenium_python'
+        'axe_selenium_python>=1.2.4'
     ],
     entry_points={'pytest11': ['axe = pytest_axe.pytest_axe']},
     license='Mozilla Public License 2.0 (MPL 2.0)',
