@@ -38,7 +38,7 @@ def pytest_collection_modifyitems(config, items):
 
 
 def run_axe(page, context=None, options=None, impact=None):
-    print("\nrun_axe: impact=%s", impact)
+    print("\nrun_axe: impact=%s" % impact)
     axe = PytestAxe(page.selenium)
     axe.analyze()
 
@@ -60,7 +60,7 @@ class PytestAxe(Axe):
         """Inject aXe, run against current page, and return rules & violations."""
         self.inject()
         data = self.execute(self.context, self.options)
-        violations = dict((rule['id'], rule) for rule in data['violations'] if self.impact_included(rule, self.impact))
+        violations = dict((rule['id'], rule) for rule in data['violations'] if self.impact_included(rule))
 
         return violations
 
