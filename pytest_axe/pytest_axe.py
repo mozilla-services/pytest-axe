@@ -45,24 +45,28 @@ def run_axe(page, context=None, options=None, impact=None):
 
 class PytestAxe(Axe):
 
-    def __init__(self, selenium, script_url=None):
+    def __init__(self, selenium, script_url=None, context=None, options=None, impact=None):
         super(PytestAxe, self).__init__(selenium)
+        self.context = context
+        self.options = options
+        self.impact = impact
 
     def get_rules(self):
         """Return array of accessibility rules."""
         response = self.selenium.execute_script('return axe.getRules();')
         return response
 
-    def run(self, context=None, options=None, impact=None):
+    def run(self):
         """Inject aXe, run against current page, and return rules & violations."""
         self.inject()
-        data = self.execute(context, options)
-        violations = dict((rule['id'], rule) for rule in data['violations'] if self.impact_included(rule, impact))
+        data = self.execute(self.context, self.options)
+        violations = dict((rule['id'], rule) for rule in data['violations'] if self.impact_included(rule, self.impact))
 
         return violations
 
-    def impact_included(self, rule, impact):
+    def impact_included(self, rule):
         """Filter violations with specified impact level or higher."""
+        impact = self.impact
         if impact == 'minor' or impact is None:
             return True
         elif impact == 'serious':
@@ -74,11 +78,11 @@ class PytestAxe(Axe):
         else:
             return False
 
-    def analyze(self, context=None, options=None, impact=None):
+    def analyze(self):
         """Run aXe accessibility checks, and write results to file."""
         disabled = environ.get('ACCESSIBILITY_DISABLED')
         if not disabled or disabled is None:
-            violations = self.run(context, options, impact)
+            violations = self.run()
 
             # Format file name based on page title and current datetime.
             t = time.strftime("%m_%d_%Y_%H:%M:%S")
