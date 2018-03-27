@@ -1,7 +1,14 @@
 pytest-axe
 ==========
 
-pytest fixture for axe-selenium-python
+Pytest plugin for ``axe-selenium-python``. ``pytest-axe`` adds a pytest fixture
+for Axe objects, to simplify running accessibility checks. Using this fixture
+requires the use of pytest-selenium.
+
+``pytest-axe`` also includes a command line option, ``--axe``, to keep
+accessibility tests separate from functional tests.
+
+
 
 .. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg
    :target: https://github.com/kimberlythegeek/pytest-axe/blob/master/LICENSE.txt
@@ -33,6 +40,7 @@ To install pytest-axe:
 
 Usage
 -----
+
 To run tests using pytest-selenium (a dependency of axe-selenium-python), tests must be marked with the non-destructive pytest decorator:
 
 .. code-block:: python
@@ -45,20 +53,21 @@ Test suites using axe-selenium-python must import pytest and the Axe class.
 
 pytest-selenium relies on the `base_url <https://github.com/pytest-dev/pytest-base-url>`_ fixture, which can be set in a configuration file, or as a command line argument.
 
-Configuration File
-******************
-
 .. code-block:: ini
 
  [pytest]
   base_url = http://www.example.com
 
-Command Line Argument
-*********************
-
 .. code-block:: bash
 
   $ pytest --base-url http://www.example.com
+
+aXe Command Line Option
+************************
+The ``@pytest.mark.accessibility`` marker must be added to all accessibility tests.
+
+To run only  **non**-accessibility tests, run ``pytest`` as usual. To run only
+accessibility tests, add ``--axe`` to your ``pytest`` command(s).
 
 Example Test Function
 *********************
