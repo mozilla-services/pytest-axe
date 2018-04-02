@@ -1,0 +1,4 @@
+pytest==3.5.0
+pytest-selenium==1.12.0
+pytest-html==1.16.1
+axe_selenium_python==2.0.1

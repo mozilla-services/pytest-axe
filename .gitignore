@@ -9,3 +9,5 @@ __pycache__
 *.html
 .tox
 update.sh
+.pytest_cache
+tests/
