@@ -50,6 +50,38 @@ class PytestAxe(Axe):
         self.options = options
         self.impact = impact
 
+    def report(self, violations):
+        """
+        Return readable report of accessibility violations found.
+
+        :param violations: Dictionary of violations.
+        :type violations: dict
+        :return report: Readable report of violations.
+        :rtype: string
+        """
+        string = ''
+        string += 'Found ' + str(len(violations)) + ' accessibility violations:'
+        for violation, rule in violations.items():
+            string += '\n\n\nRule Violated:\n' + rule['id'] + ' - ' + rule['description'] + \
+                '\n\tURL: ' + rule['helpUrl'] + \
+                '\n\tImpact Level: ' + rule['impact'] + \
+                '\n\tTags:'
+            for tag in rule['tags']:
+                string += ' ' + tag
+            string += '\n\tElements Affected:'
+            i = 1
+            for node in rule['nodes']:
+                for target in node['target']:
+                    string += '\n\t' + str(i) + ') Target: ' + target
+                    i += 1
+                for item in node['all']:
+                    string += '\n\t\t' + item['message']
+                for item in node['any']:
+                    string += '\n\t\t' + item['message']
+                for item in node['none']:
+                    string += '\n\t\t' + item['message']
+            string += '\n\n\n'
+        return string
 
     def get_rules(self):
         """Return array of accessibility rules."""
@@ -80,18 +112,16 @@ class PytestAxe(Axe):
 
     def analyze(self):
         """Run aXe accessibility checks, and write results to file."""
-        disabled = environ.get('ACCESSIBILITY_DISABLED')
-        if not disabled or disabled is None:
-            violations = self.run()
+        violations = self.run()
 
-            # Format file name based on page title and current datetime.
-            t = time.strftime("%m_%d_%Y_%H:%M:%S")
-            title = self.selenium.title
-            title = re.sub('[\s\W]', '-', title)
-            title = re.sub('(-|_)+', '-', title)
+        # Format file name based on page title and current datetime.
+        t = time.strftime("%m_%d_%Y_%H:%M:%S")
+        title = self.selenium.title
+        title = re.sub('[\s\W]', '-', title)
+        title = re.sub('(-|_)+', '-', title)
 
-            # Output results only if reporting is enabled.
-            if environ.get('ACCESSIBILITY_REPORTING') == 'true':
-                # Write JSON results to file if recording enabled
-                self.write_results('results/%s_%s.json' % (title, t), violations)
-            assert len(violations) == 0, self.report(violations)
+        # Output results only if reporting is enabled.
+        if environ.get('ACCESSIBILITY_REPORTING') == 'true':
+            # Write JSON results to file if recording enabled
+            self.write_results('%s_%s.json' % (title, t), violations)
+        assert len(violations) == 0, self.report(violations)

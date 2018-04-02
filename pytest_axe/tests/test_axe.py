@@ -4,33 +4,13 @@
 
 from os import path
 import pytest
+import json
 
+filename = 'results.json'
+if filename:
+    with open(filename, 'r') as f:
+        test_data = json.load(f)
 
-@pytest.mark.nondestructive
-@pytest.mark.skip
-def test_get_rules(axe):
-    """Assert number of rule tests matches number of available rules."""
-    axe.inject()
-    rules = axe.get_rules()
-    assert len(rules) == 58, len(rules)
-
-
-@pytest.mark.nondestructive
-def test_execute(axe):
-    """Run axe against base_url and verify JSON output."""
-    axe.inject()
-    data = axe.execute()
-    assert data is not None, data
-
-
-@pytest.mark.nondestructive
-def test_run(base_url, axe):
-    """Assert that run method returns results."""
-    violations = axe.run()
-    assert violations is not None
-
-
-@pytest.mark.nondestructive
 def test_report(axe):
     """Test that report exists."""
     violations = axe.run()
@@ -38,14 +18,31 @@ def test_report(axe):
     report = axe.report(violations)
     assert report is not None, report
 
+def test_run(base_url, axe):
+    """Assert that run method returns results."""
+    violations = axe.run()
+    assert violations == test_data
 
-@pytest.mark.nondestructive
+@pytest.mark.skip
+def test_impact_included():
+    """Check that impact_included is correctly filtering violations."""
+    assert True
+
+@pytest.mark.skip
+def test_analyze():
+    assert True
+
 def test_write_results(base_url, axe):
     """Assert that write results method creates a file."""
     axe.inject()
-    data = axe.execute()
-    filename = 'results.json'
+    data = axe.run()
+    filename = 'test.json'
     axe.write_results(filename, data)
     # check that file exists and is not empty
     assert path.exists(filename), 'Output file not found.'
     assert path.getsize(filename) > 0, 'File contains no data.'
+
+    if filename:
+        with open(filename, 'r') as f:
+            results = json.load(f)
+    assert results == test_data

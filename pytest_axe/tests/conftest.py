@@ -12,6 +12,8 @@ from ..pytest_axe import PytestAxe as Axe
 
 _DEFAULT_SCRIPT = os.path.join(os.path.dirname(__file__), 'src', 'axe.min.js')
 
+base_url = os.path.join(os.path.dirname(__file__), 'index.html')
+
 
 @pytest.fixture
 def script_url():
@@ -20,9 +22,9 @@ def script_url():
 
 
 @pytest.fixture(scope='function')
-def axe(selenium, base_url, script_url):
+def axe(selenium, script_url):
     """Return an Axe instance based on context and options."""
-    selenium.get(base_url)
+    selenium.get('file://' + base_url)
     yield Axe(selenium, script_url)
 
 

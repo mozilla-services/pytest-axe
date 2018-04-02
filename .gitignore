@@ -10,3 +10,4 @@ __pycache__
 .tox
 update.sh
 .pytest_cache
+tests/

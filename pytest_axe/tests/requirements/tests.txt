@@ -1,5 +1,4 @@
 pytest==3.5.0
 pytest-selenium==1.12.0
 pytest-html==1.16.1
-pytest_base_url==1.4.1
-git+git://github.com/kimberlythegeek/axe-selenium-python.git@64_separate_axe_core
+axe_selenium_python==2.0.1
