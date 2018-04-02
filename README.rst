@@ -4,13 +4,13 @@ pytest-axe
 pytest-axe provides a variety of features to simplify accessibility testing using ``axe-selenium-python``.
 
 .. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg?style=for-the-badge
-   :target: https://github.com/kimberlythegeek/pytest-axe/blob/master/LICENSE.txt
+   :target: https://github.com/mozilla-services/pytest-axe/blob/master/LICENSE.txt
    :alt: License
 .. image:: https://img.shields.io/pypi/v/pytest-axe.svg?style=for-the-badge
    :target: https://pypi.org/project/pytest-axe/
    :alt: PyPI
-.. image:: https://img.shields.io/github/issues-raw/kimberlythegeek/pytest-axe.svg?style=for-the-badge
-   :target: https://github.com/kimberlythegeek/pytest-axe/issues
+.. image:: https://img.shields.io/github/issues-raw/mozilla-services/pytest-axe.svg?style=for-the-badge
+   :target: https://github.com/mozilla-services/pytest-axe/issues
    :alt: Issues
 
 Requirements
@@ -131,6 +131,6 @@ Currently, this will write the JSON files to the root of your test directory, wi
 Resources
 ---------
 
-- `Issue Tracker <http://github.com/kimberlythegeek/pytest-axe/issues>`_
-- `Code <http://github.com/kimberlythegeek/pytest-axe/>`_
+- `Issue Tracker <http://github.com/mozilla-services/pytest-axe/issues>`_
+- `Code <http://github.com/mozilla-services/pytest-axe/>`_
 - `axe-selenium-python <https://github.com/mozilla-services/axe-selenium-python>`_
