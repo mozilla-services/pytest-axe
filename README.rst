@@ -28,7 +28,7 @@ Requirements
 You will need the following prerequisites in order to use pytest-axe:
 
 - Python 2.7 or 3.6
-- pytest-axe >= 2.0.1
+- axe-selenium-python >= 2.0.1
 - `geckodriver <https://github.com/mozilla/geckodriver/releases>`_ downloaded and `added to your PATH <https://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path#answer-40208762>`_
 
 Optional
@@ -142,4 +142,4 @@ Resources
 
 - `Issue Tracker <http://github.com/mozilla-services/pytest-axe/issues>`_
 - `Code <http://github.com/mozilla-services/pytest-axe/>`_
-- `pytest-axe <https://github.com/mozilla-services/pytest-axe>`_
+- `axe-selenium-python <https://github.com/mozilla-services/axe-selenium-python>`_
