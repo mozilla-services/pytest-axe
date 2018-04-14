@@ -1,7 +1,7 @@
 pytest-axe
 ==========
 
-pytest-axe provides a variety of features to simplify accessibility testing using ``pytest-axe``.
+pytest-axe provides a variety of features to simplify accessibility testing using ``axe-selenium-python``.
 
 .. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg?style=flat-square
    :target: https://github.com/mozilla-services/pytest-axe/blob/master/LICENSE.txt
