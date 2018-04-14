@@ -9,9 +9,6 @@ pytest-axe provides a variety of features to simplify accessibility testing usin
 .. image:: https://img.shields.io/pypi/v/pytest-axe.svg?style=flat-square
    :target: https://pypi.org/project/pytest-axe/
    :alt: PyPI
-.. image:: https://img.shields.io/travis/mozilla-services/pytest-axe.svg?style=flat-square
-   :target: https://travis-ci.org/mozilla-services/pytest-axe
-   :alt: Travis
 .. image:: https://img.shields.io/pypi/wheel/pytest-axe.svg?style=flat-square
    :target: https://pypi.org/project/pytest-axe/
    :alt: wheel
