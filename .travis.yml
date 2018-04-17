@@ -5,7 +5,7 @@ jobs:
     - stage:
       env:
         - TOXENV=flake8
-install: skip
+install: pip install tox
 script:
     - flake8 .
 notifications:
