@@ -51,7 +51,7 @@ To install pytest-axe:
 Usage
 ------
 
-``pytest-axe`` adds a command line option for specifying whether or not to run accessibility tests.
+``pytest-axe`` adds a command-line option for specifying whether or not to run accessibility tests.
 
 Running pytest with ``--axe`` will run only tests marked as accessibility, i.e. ``@pytest.mark.accessibility``.
 
