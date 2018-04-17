@@ -1,12 +1,10 @@
 sudo: required
 language: python
-jobs:
-  include:
-    - stage:
-      env:
-        - TOXENV=flake8
-install: pip install tox
+env:
+  - TOXENV=flake8
+install:
+  - pip install tox
 script:
-    - flake8 .
+  - tox
 notifications:
   email: fte-ci@mozilla.com
