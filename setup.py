@@ -15,18 +15,18 @@ def readme():
 
 
 setup(name='pytest-axe',
-    version='1.0.0',
-    description='pytest plugin for axe-selenium-python',
-    long_description=readme(),
-    url='http://github.com/kimberlythegeek/pytest-axe',
-    author='Kimberly Pennington',
-    author_email='kpennington@mozilla.com',
-    packages=['pytest_axe'],
-    install_requires=[
-        'pytest-selenium>=1.12.0',
-        'pytest>=3.5.0',
-        'axe_selenium_python>=2.0.1'
-    ],
-    entry_points={'pytest11': ['axe = pytest_axe.pytest_axe']},
-    license='Mozilla Public License 2.0 (MPL 2.0)',
-    keywords='axe-core selenium pytest-selenium accessibility automation mozilla')
+      version='1.0.0',
+      description='pytest plugin for axe-selenium-python',
+      long_description=readme(),
+      url='http://github.com/kimberlythegeek/pytest-axe',
+      author='Kimberly Pennington',
+      author_email='kpennington@mozilla.com',
+      packages=['pytest_axe'],
+      install_requires=[
+          'pytest-selenium>=1.12.0',
+          'pytest>=3.5.0',
+          'axe_selenium_python>=2.0.1'
+      ],
+      entry_points={'pytest11': ['axe = pytest_axe.pytest_axe']},
+      license='Mozilla Public License 2.0 (MPL 2.0)',
+      keywords='axe-core selenium pytest-selenium accessibility automation mozilla')
