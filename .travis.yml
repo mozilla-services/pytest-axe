@@ -1,0 +1,10 @@
+sudo: required
+language: python
+env:
+  - TOXENV=flake8
+install:
+  - pip install tox
+script:
+  - tox
+notifications:
+  email: fte-ci@mozilla.com

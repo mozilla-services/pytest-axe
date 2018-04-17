@@ -11,6 +11,7 @@ if filename:
     with open(filename, 'r') as f:
         test_data = json.load(f)
 
+
 def test_report(axe):
     """Test that report exists."""
     violations = axe.run()
@@ -18,19 +19,23 @@ def test_report(axe):
     report = axe.report(violations)
     assert report is not None, report
 
+
 def test_run(base_url, axe):
     """Assert that run method returns results."""
     violations = axe.run()
     assert violations == test_data
+
 
 @pytest.mark.skip
 def test_impact_included():
     """Check that impact_included is correctly filtering violations."""
     assert True
 
+
 @pytest.mark.skip
 def test_analyze():
     assert True
+
 
 def test_write_results(base_url, axe):
     """Assert that write results method creates a file."""
