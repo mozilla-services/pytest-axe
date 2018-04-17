@@ -1,0 +1,23 @@
+sudo: required
+language: python
+services:
+  - docker
+jobs:
+  include:
+    - stage:
+      env:
+        - TOXENV=flake8
+    - stage:
+      env:
+        - TOXENV=py27
+    - stage:
+      env:
+        - TOXENV=py36
+cache:
+  pip: true
+before_install: docker build -t pytest-axe .
+install: skip
+script:
+    - docker run -e TOXENV=$TOXENV pytest-axe tox
+notifications:
+  email: fte-ci@mozilla.com
