@@ -106,7 +106,7 @@ class PytestAxe(Axe):
         elif impact == 'serious':
             if rule['impact'] == 'serious' or rule['impact'] == 'critical':
                 return True
-        elif impact == 'critical' and rule['impact'] == critical:
+        elif impact == 'critical' and rule['impact'] == 'critical':
             return True
         else:
             return False
