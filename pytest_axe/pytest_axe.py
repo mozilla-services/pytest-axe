@@ -101,12 +101,13 @@ class PytestAxe(Axe):
         impact = self.impact
         if impact == 'minor' or impact is None:
             return True
+        elif impact == 'moderate' & rule['impact'] != 'minor':
+            return True
         elif impact == 'serious':
-            if rule['impact'] != 'minor':
+            if rule['impact'] == 'serious' or rule['impact'] == 'critical':
                 return True
-        elif impact == 'critical':
-            if rule['impact'] == 'critical':
-                return True
+        elif impact == 'critical' and rule['impact'] == critical:
+            return True
         else:
             return False
 
