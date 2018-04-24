@@ -15,6 +15,9 @@ pytest-axe provides a variety of features to simplify accessibility testing usin
 .. image:: https://img.shields.io/github/issues-raw/mozilla-services/pytest-axe.svg?style=flat-square
    :target: https://github.com/mozilla-services/pytest-axe/issues
    :alt: Issues
+.. image:: https://travis-ci.org/mozilla-services/pytest-axe.svg?style=flat-square
+   :target: https://travis-ci.org/mozilla-services/pytest-axe
+   :alt: Travis
 .. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/shield.svg?style=flat-square
    :target: https://pyup.io/repos/github/mozilla-services/pytest-axe/
    :alt: Updates
@@ -54,7 +57,7 @@ To install pytest-axe:
 Usage
 ------
 
-``pytest-axe`` adds a command line option for specifying whether or not to run accessibility tests.
+``pytest-axe`` adds a command-line option for specifying whether or not to run accessibility tests.
 
 Running pytest with ``--axe`` will run only tests marked as accessibility, i.e. ``@pytest.mark.accessibility``.
 
