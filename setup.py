@@ -24,7 +24,7 @@ setup(name='pytest-axe',
       packages=['pytest_axe'],
       install_requires=[
           'pytest-selenium>=1.12.0',
-          'pytest>=3.5.0',
+          'pytest>=3.0.0',
           'axe_selenium_python>=2.0.1'
       ],
       entry_points={'pytest11': ['axe = pytest_axe.pytest_axe']},
