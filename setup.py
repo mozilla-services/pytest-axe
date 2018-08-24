@@ -15,7 +15,7 @@ def readme():
 
 
 setup(name='pytest-axe',
-      version='1.0.0',
+      version='1.0.1',
       description='pytest plugin for axe-selenium-python',
       long_description=readme(),
       url='http://github.com/kimberlythegeek/pytest-axe',
