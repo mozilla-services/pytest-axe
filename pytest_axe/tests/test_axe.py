@@ -6,9 +6,9 @@ from os import path
 import pytest
 import json
 
-filename = 'results.json'
+filename = "results.json"
 if filename:
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         test_data = json.load(f)
 
 
@@ -41,13 +41,13 @@ def test_write_results(base_url, axe):
     """Assert that write results method creates a file."""
     axe.inject()
     data = axe.run()
-    filename = 'test.json'
+    filename = "test.json"
     axe.write_results(filename, data)
     # check that file exists and is not empty
-    assert path.exists(filename), 'Output file not found.'
-    assert path.getsize(filename) > 0, 'File contains no data.'
+    assert path.exists(filename), "Output file not found."
+    assert path.getsize(filename) > 0, "File contains no data."
 
     if filename:
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             results = json.load(f)
     assert results == test_data

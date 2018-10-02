@@ -10,9 +10,9 @@ from py.xml import html
 
 from ..pytest_axe import PytestAxe as Axe
 
-_DEFAULT_SCRIPT = os.path.join(os.path.dirname(__file__), 'src', 'axe.min.js')
+_DEFAULT_SCRIPT = os.path.join(os.path.dirname(__file__), "src", "axe.min.js")
 
-base_url = os.path.join(os.path.dirname(__file__), 'index.html')
+base_url = os.path.join(os.path.dirname(__file__), "index.html")
 
 
 @pytest.fixture
@@ -21,25 +21,25 @@ def script_url():
     return _DEFAULT_SCRIPT
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def axe(selenium, script_url):
     """Return an Axe instance based on context and options."""
-    selenium.get('file://' + base_url)
+    selenium.get("file://" + base_url)
     yield Axe(selenium, script_url)
 
 
 @pytest.mark.optionalhook
 def pytest_html_results_table_header(cells):
     """Add description and sortable time header to HTML report."""
-    cells.insert(2, html.th('Description'))
-    cells.insert(0, html.th('Time', class_='sortable time', col='time'))
+    cells.insert(2, html.th("Description"))
+    cells.insert(0, html.th("Time", class_="sortable time", col="time"))
 
 
 @pytest.mark.optionalhook
 def pytest_html_results_table_row(report, cells):
     """Add description and sortable time column to HTML report."""
     cells.insert(2, html.td(report.description))
-    cells.insert(1, html.td(datetime.utcnow(), class_='col-time'))
+    cells.insert(1, html.td(datetime.utcnow(), class_="col-time"))
 
 
 @pytest.mark.hookwrapper
