@@ -4,10 +4,12 @@ build/
 dist/
 *.egg
 __pycache__
+*.pyc
 *.json
 *.log
 *.html
 .tox
 update.sh
 .pytest_cache
-tests/
+!pytest_axe/tests/index.html
+!pytest_axe/tests/results.json

@@ -7,20 +7,30 @@ import time
 from os import environ
 
 import pytest
-
 from axe_selenium_python import Axe
 
 
+# TODO: Strongly considering deprecating the pytest fixture.
+# It adds complexity, and can only be applied to specific use cases.
 @pytest.fixture
 def axe(selenium, base_url):
-    """Return an Axe instance based on context and options."""
-    selenium.get(base_url)
+    """
+        Return an Axe instance based on context and options, to perform
+        accessibility audits using Selenium WebDriver.
+    """
+    if base_url:
+        selenium.get(base_url)
     yield PytestAxe(selenium)
 
 
+# TODO: I am also unsure if a command line option adds any value.
+# There are checks within axe-selenium-python for environement variables
+# that can enable or disable accessibility tests and writing the results to
+# file. If I keep this --axe flag, the aforementioned checks should be removed.
 def pytest_addoption(parser):
-    parser.addoption("--axe", action="store_true", default=False,
-                     help="run accessibility tests only")
+    parser.addoption(
+        "--axe", action="store_true", default=False, help="run accessibility tests only"
+    )
 
 
 def pytest_collection_modifyitems(config, items):
@@ -43,8 +53,9 @@ def run_axe(page, context=None, options=None, impact=None):
 
 
 class PytestAxe(Axe):
-
-    def __init__(self, selenium, script_url=None, context=None, options=None, impact=None):
+    def __init__(
+        self, selenium, script_url=None, context=None, options=None, impact=None
+    ):
         super(PytestAxe, self).__init__(selenium)
         self.context = context
         self.options = options
@@ -57,56 +68,80 @@ class PytestAxe(Axe):
         :param violations: Dictionary of violations.
         :type violations: dict
         :return report: Readable report of violations.
-        :rtype: string
+        :rtype: violations_report
         """
-        string = ''
-        string += 'Found ' + str(len(violations)) + ' accessibility violations:'
+        violations_report = ""
+        violations_report += (
+            "Found " + str(len(violations)) + " accessibility violations:"
+        )
         for violation, rule in violations.items():
-            string += '\n\n\nRule Violated:\n' + rule['id'] + ' - ' + rule['description'] + \
-                '\n\tURL: ' + rule['helpUrl'] + \
-                '\n\tImpact Level: ' + rule['impact'] + \
-                '\n\tTags:'
-            for tag in rule['tags']:
-                string += ' ' + tag
-            string += '\n\tElements Affected:'
+            violations_report += (
+                "\n\n\nRule Violated:\n"
+                + rule["id"]
+                + " - "
+                + rule["description"]
+                + "\n\tURL: "
+                + rule["helpUrl"]
+                + "\n\tImpact Level: "
+                + rule["impact"]
+                + "\n\tTags:"
+            )
+            for tag in rule["tags"]:
+                violations_report += " " + tag
+            violations_report += "\n\tElements Affected:"
             i = 1
-            for node in rule['nodes']:
-                for target in node['target']:
-                    string += '\n\t' + str(i) + ') Target: ' + target
+            for node in rule["nodes"]:
+                for target in node["target"]:
+                    violations_report += "\n\t" + str(i) + ") Target: " + target
                     i += 1
-                for item in node['all']:
-                    string += '\n\t\t' + item['message']
-                for item in node['any']:
-                    string += '\n\t\t' + item['message']
-                for item in node['none']:
-                    string += '\n\t\t' + item['message']
-            string += '\n\n\n'
-        return string
+                for item in node["all"]:
+                    violations_report += "\n\t\t" + item["message"]
+                for item in node["any"]:
+                    violations_report += "\n\t\t" + item["message"]
+                for item in node["none"]:
+                    violations_report += "\n\t\t" + item["message"]
+            violations_report += "\n\n\n"
+        return violations_report
 
     def get_rules(self):
         """Return array of accessibility rules."""
-        response = self.selenium.execute_script('return axe.getRules();')
+        response = self.selenium.execute_script("return axe.getRules();")
         return response
 
     def run(self):
         """Inject aXe, run against current page, and return rules & violations."""
         self.inject()
         data = self.execute(self.context, self.options)
-        violations = dict((rule['id'], rule) for rule in data['violations'] if self.impact_included(rule))
+        violations = dict(
+            (rule["id"], rule)
+            for rule in data["violations"]
+            if self.impact_included(rule)
+        )
 
+        return violations
+
+    def run_only(self, rule):
+        self.inject()
+        run_only_rule = '{runOnly:{type: "rule", values: ["' + rule + '"]}}'
+        data = self.execute(self.context, run_only_rule)
+        violations = dict(
+            (rule["id"], rule)
+            for rule in data["violations"]
+            if self.impact_included(rule)
+        )
         return violations
 
     def impact_included(self, rule):
         """Filter violations with specified impact level or higher."""
         impact = self.impact
-        if impact == 'minor' or impact is None:
+        if impact == "minor" or impact is None:
             return True
-        elif impact == 'moderate' & rule['impact'] != 'minor':
+        elif impact == "moderate" & rule["impact"] != "minor":
             return True
-        elif impact == 'serious':
-            if rule['impact'] == 'serious' or rule['impact'] == 'critical':
+        elif impact == "serious":
+            if rule["impact"] == "serious" or rule["impact"] == "critical":
                 return True
-        elif impact == 'critical' and rule['impact'] == 'critical':
+        elif impact == "critical" and rule["impact"] == "critical":
             return True
         else:
             return False
@@ -118,11 +153,11 @@ class PytestAxe(Axe):
         # Format file name based on page title and current datetime.
         t = time.strftime("%m_%d_%Y_%H:%M:%S")
         title = self.selenium.title
-        title = re.sub('[\s\W]', '-', title)
-        title = re.sub('(-|_)+', '-', title)
+        title = re.sub("[\s\W]", "-", title)
+        title = re.sub("(-|_)+", "-", title)
 
         # Output results only if reporting is enabled.
-        if environ.get('ACCESSIBILITY_REPORTING') == 'true':
+        if environ.get("ACCESSIBILITY_REPORTING") == "true":
             # Write JSON results to file if recording enabled
-            self.write_results('%s_%s.json' % (title, t), violations)
+            self.write_results("%s_%s.json" % (title, t), violations)
         assert len(violations) == 0, self.report(violations)

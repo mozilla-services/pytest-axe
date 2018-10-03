@@ -3,25 +3,25 @@ pytest-axe
 
 pytest-axe provides a variety of features to simplify accessibility testing using ``axe-selenium-python``.
 
-.. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg?style=flat-square
+.. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg
    :target: https://github.com/mozilla-services/pytest-axe/blob/master/LICENSE.txt
    :alt: License
-.. image:: https://img.shields.io/pypi/v/pytest-axe.svg?style=flat-square
+.. image:: https://img.shields.io/pypi/v/pytest-axe.svg
    :target: https://pypi.org/project/pytest-axe/
    :alt: PyPI
-.. image:: https://img.shields.io/pypi/wheel/pytest-axe.svg?style=flat-square
+.. image:: https://img.shields.io/pypi/wheel/pytest-axe.svg
    :target: https://pypi.org/project/pytest-axe/
    :alt: wheel
-.. image:: https://img.shields.io/github/issues-raw/mozilla-services/pytest-axe.svg?style=flat-square
+.. image:: https://img.shields.io/github/issues-raw/mozilla-services/pytest-axe.svg
    :target: https://github.com/mozilla-services/pytest-axe/issues
    :alt: Issues
-.. image:: https://travis-ci.org/mozilla-services/pytest-axe.svg?style=flat-square
+.. image:: https://travis-ci.org/mozilla-services/pytest-axe.svg
    :target: https://travis-ci.org/mozilla-services/pytest-axe
    :alt: Travis
-.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/shield.svg?style=flat-square
+.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/shield.svg
    :target: https://pyup.io/repos/github/mozilla-services/pytest-axe/
    :alt: Updates
-.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/python-3-shield.svg?style=flat-square
+.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/python-3-shield.svg
    :target: https://pyup.io/repos/github/mozilla-services/pytest-axe/
    :alt: Python 3
 
@@ -31,8 +31,9 @@ Requirements
 You will need the following prerequisites in order to use pytest-axe:
 
 - Python 2.7 or 3.6
-- axe-selenium-python >= 2.0.1
-- `geckodriver <https://github.com/mozilla/geckodriver/releases>`_ downloaded and `added to your PATH <https://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path#answer-40208762>`_
+- axe-selenium-python >= 2.1.1
+- The appropriate driver for the browser you intend to use, downloaded and added to your path, e.g. geckodriver for Firefox:
+  - `geckodriver <https://github.com/mozilla/geckodriver/releases>`_ downloaded and `added to your PATH <https://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path#answer-40208762>`_
 
 Optional
 --------
@@ -63,8 +64,7 @@ Running pytest with ``--axe`` will run only tests marked as accessibility, i.e. 
 
 The absence of this command line option will run only tests **not** marked as accessibility.
 
-Pytest Fixture Example
-^^^^^^^^^^^^^^^^^^^^^^^
+``pytest-axe`` also includes a pytest fixture to handle set up and tear down.
 
 The following example will run aXe-core against the entire page, and check for violations of any impact level.
 
@@ -105,30 +105,82 @@ The axe fixture uses ``base_url`` defined in the pytest command or in a config f
 
   $ pytest --base-url http://www.mozilla.com --driver Firefox test_accessibility.py
 
+Parameterized Tests and Expected Failures
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+As of version 1.1.0, ``pytest-axe`` provides helper methods to generate individual tests for
+each accessibility rule.
+
+Usage Example
+"""""""""""""
+
+.. code-block::python
+  from selenium import webdriver
+  from axe_selenium_python.axe import Axe
+  from pytest_axe.parametrize_tests import *
+
+
+  @pytest.mark.accessibility
+  def test_home_page_accessibility(rule):
+      """Run accessibility audits on the home page."""
+      driver = webdriver.Firefox()
+      driver.get("https://firefox.com")
+      axe = Axe(driver)
+      axe.inject()
+
+      results = driver.execute_script(axe_run_only(rule))
+      assert len(results["violations"]) == 0
+
+Expected Failures
+"""""""""""""""""
+Generating test cases for each accessibility rule enables the ability to
+mark specific **rules** as expected failures. You must configure this in the
+``conftest.py`` file in your test suite.
+
+
+Example
+*******
+
+.. code-block::python
+  import pytest
+
+
+  def pytest_configure(config):
+      """
+        Included rule ID of tests that are expected to fail as a key, with the
+        github issue number as a value (or any other desired info as
+        reason for failure), and pass to pytestconfig to generate the tests.
+
+        Example:
+            config.xfail_rules = {
+                'meta-viewport': '#245'
+            }
+      """
+      config.xfail_rules = {"meta-viewport": "#245"}
+
 PyPOM Example
 ^^^^^^^^^^^^^^^^^^^^^
 
 **These examples are dependent on the use of** `PyPOM <https://github.com/mozilla/PyPOM>`_ **, and assumes any** ``Page`` **object has a** ``selenium`` **object attribute.**
 
-.. code-block:: python
+.. code-block::python
+  from pytest_axe.pytest_axe import run_axe
 
- from pytest_axe.pytest_axe import run_axe
 
   @pytest.mark.accessibility
   def test_login_page_accessibility(login_page):
-      """Test login page for accessibility violations."""
-      run_axe(login_page)
+    """Test login page for accessibility violations."""
+    run_axe(login_page)
 
 And with custom run options:
 
-.. code-block:: python
+.. code-block::python
+  from pytest_axe.pytest_axe import run_axe
 
- from pytest_axe.pytest_axe import run_axe
 
   @pytest.mark.accessibility
   def test_login_page_accessibility(login_page):
       """Test login page header for critical accessibility violations."""
-      run_axe(login_page, 'header', None, 'critical')
+      run_axe(login_page, "header", None, "critical")
 
 Recording Results
 ^^^^^^^^^^^^^^^^^^^
@@ -149,6 +201,10 @@ Resources
 
 CHANGELOG
 ----------
+
+Version 1.1.0
+^^^^^^^^^^^^^
+- Added the ability to generate indiviudal test cases for each accessibility rule, which enables xfailing specific accessibility rules.
 
 Version 1.0.0
 ^^^^^^^^^^^^^^

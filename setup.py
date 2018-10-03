@@ -5,23 +5,24 @@
 
 from setuptools import setup
 
-
-with open('./README.rst', 'r') as f:
+with open("./README.rst", "r") as f:
     readme = f.read()
 
-setup(name='pytest-axe',
-      version='1.0.1',
-      description='pytest plugin for axe-selenium-python',
-      long_description=readme,
-      url='http://github.com/kimberlythegeek/pytest-axe',
-      author='Kimberly Sereduck',
-      author_email='ksereduck@mozilla.com',
-      packages=['pytest_axe'],
-      install_requires=[
-          'pytest-selenium>=1.12.0',
-          'pytest>=3.0.0',
-          'axe_selenium_python>=2.0.6'
-      ],
-      entry_points={'pytest11': ['axe = pytest_axe.pytest_axe']},
-      license='Mozilla Public License 2.0 (MPL 2.0)',
-      keywords='axe-core selenium pytest-selenium accessibility automation mozilla')
+setup(
+    name="pytest-axe",
+    use_scm_version=True,
+    description="pytest plugin for axe-selenium-python",
+    long_description=readme,
+    url="http://github.com/kimberlythegeek/pytest-axe",
+    author="Kimberly Sereduck",
+    author_email="ksereduck@mozilla.com",
+    packages=["pytest_axe"],
+    install_requires=[
+        "pytest-selenium>=1.12.0",
+        "pytest>=3.0.0",
+        "axe_selenium_python>=2.1.1",
+    ],
+    entry_points={"pytest11": ["axe = pytest_axe.pytest_axe"]},
+    license="Mozilla Public License 2.0 (MPL 2.0)",
+    keywords="axe-core selenium pytest-selenium accessibility automation mozilla",
+)
