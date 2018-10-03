@@ -68,12 +68,14 @@ class PytestAxe(Axe):
         :param violations: Dictionary of violations.
         :type violations: dict
         :return report: Readable report of violations.
-        :rtype: string
+        :rtype: violations_report
         """
-        string = ""
-        string += "Found " + str(len(violations)) + " accessibility violations:"
+        violations_report = ""
+        violations_report += (
+            "Found " + str(len(violations)) + " accessibility violations:"
+        )
         for violation, rule in violations.items():
-            string += (
+            violations_report += (
                 "\n\n\nRule Violated:\n"
                 + rule["id"]
                 + " - "
@@ -85,21 +87,21 @@ class PytestAxe(Axe):
                 + "\n\tTags:"
             )
             for tag in rule["tags"]:
-                string += " " + tag
-            string += "\n\tElements Affected:"
+                violations_report += " " + tag
+            violations_report += "\n\tElements Affected:"
             i = 1
             for node in rule["nodes"]:
                 for target in node["target"]:
-                    string += "\n\t" + str(i) + ") Target: " + target
+                    violations_report += "\n\t" + str(i) + ") Target: " + target
                     i += 1
                 for item in node["all"]:
-                    string += "\n\t\t" + item["message"]
+                    violations_report += "\n\t\t" + item["message"]
                 for item in node["any"]:
-                    string += "\n\t\t" + item["message"]
+                    violations_report += "\n\t\t" + item["message"]
                 for item in node["none"]:
-                    string += "\n\t\t" + item["message"]
-            string += "\n\n\n"
-        return string
+                    violations_report += "\n\t\t" + item["message"]
+            violations_report += "\n\n\n"
+        return violations_report
 
     def get_rules(self):
         """Return array of accessibility rules."""
