@@ -7,11 +7,11 @@ import time
 from os import environ
 
 import pytest
-
 from axe_selenium_python import Axe
 
-## TODO: Strongly considering deprecating the pytest fixture.
-## It adds complexity, and can only be applied to specific use cases.
+
+# TODO: Strongly considering deprecating the pytest fixture.
+# It adds complexity, and can only be applied to specific use cases.
 @pytest.fixture
 def axe(selenium, base_url):
     """

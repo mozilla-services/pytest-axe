@@ -3,49 +3,48 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
-from datetime import datetime
 
 import pytest
-from py.xml import html
+from selenium import webdriver
 
 from ..pytest_axe import PytestAxe as Axe
-
-_DEFAULT_SCRIPT = os.path.join(os.path.dirname(__file__), "src", "axe.min.js")
 
 base_url = os.path.join(os.path.dirname(__file__), "index.html")
 
 
-@pytest.fixture
-def script_url():
-    """Return a script URL."""
-    return _DEFAULT_SCRIPT
+@pytest.fixture(scope="session", autouse=True)
+def test_page():
+    driver = webdriver.Firefox()
+    driver.get("file://" + base_url)
+
+    axe = Axe(driver)
+    axe.inject()
+
+    yield axe
+    driver.close()
 
 
-@pytest.fixture(scope="function")
-def axe(selenium, script_url):
-    """Return an Axe instance based on context and options."""
-    selenium.get("file://" + base_url)
-    yield Axe(selenium, script_url)
+def pytest_configure(config):
+    """
+        Included rule ID of tests that are expected to fail as a key, with the
+        github issue number as a value (or any other desired info as
+        reason for failure), and pass to pytestconfig to generate the tests.
 
-
-@pytest.mark.optionalhook
-def pytest_html_results_table_header(cells):
-    """Add description and sortable time header to HTML report."""
-    cells.insert(2, html.th("Description"))
-    cells.insert(0, html.th("Time", class_="sortable time", col="time"))
-
-
-@pytest.mark.optionalhook
-def pytest_html_results_table_row(report, cells):
-    """Add description and sortable time column to HTML report."""
-    cells.insert(2, html.td(report.description))
-    cells.insert(1, html.td(datetime.utcnow(), class_="col-time"))
-
-
-@pytest.mark.hookwrapper
-def pytest_runtest_makereport(item, call):
-    """Make HTML report using test-function docstrings as description."""
-    outcome = yield
-    report = outcome.get_result()
-    # add docstring to 'description' column
-    report.description = str(item.function.__doc__)
+        Example:
+            config.xfail_rules = {
+                "meta-viewport": "Reason: GitHub issue #245"
+            }
+    """
+    config.xfail_rules = {
+        "bypass": "Reason: testing",
+        "color-contrast": "Reason: testing",
+        "html-has-lang": "Reason: testing",
+        "image-alt": "Reason: testing",
+        "label": "Reason: testing",
+        "landmark-one-main": "Reason: testing",
+        "link-in-text-block": "Reason: testing",
+        "page-has-heading-one": "Reason: testing",
+        "region": "Reason: testing",
+        "td-has-header": "Reason: testing",
+    }
+    print(config.xfail_rules)

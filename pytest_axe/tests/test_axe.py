@@ -1,10 +1,9 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
-from os import path
-import pytest
 import json
+
+from ..parameterize_tests import *  # NOQA
 
 filename = "results.json"
 if filename:
@@ -12,42 +11,29 @@ if filename:
         test_data = json.load(f)
 
 
-def test_report(axe):
-    """Test that report exists."""
-    violations = axe.run()
-
-    report = axe.report(violations)
-    assert report is not None, report
-
-
-def test_run(base_url, axe):
-    """Assert that run method returns results."""
-    violations = axe.run()
-    assert violations == test_data
+def test_report(test_page):
+    """Test that report method returns a non-empty string."""
+    violations = test_page.run()
+    report = test_page.report(violations)
+    assert report is not None
 
 
-@pytest.mark.skip
-def test_impact_included():
-    """Check that impact_included is correctly filtering violations."""
-    assert True
+def test_get_rules(test_page):
+    """Test that get_rules method returns a non-empty list."""
+    rules = test_page.get_rules()
+    assert rules is not None
 
 
-@pytest.mark.skip
-def test_analyze():
-    assert True
+def test_run(base_url, test_page):
+    """Assert that run method returns a non-empty dictionary."""
+    violations = test_page.run()
+    assert violations is not None
 
 
-def test_write_results(base_url, axe):
-    """Assert that write results method creates a file."""
-    axe.inject()
-    data = axe.run()
-    filename = "test.json"
-    axe.write_results(filename, data)
-    # check that file exists and is not empty
-    assert path.exists(filename), "Output file not found."
-    assert path.getsize(filename) > 0, "File contains no data."
-
-    if filename:
-        with open(filename, "r") as f:
-            results = json.load(f)
-    assert results == test_data
+def test_parameterize_tests(rule, test_page):
+    """
+        Test that parameterized tests xfail correctly, based on xfail_rules
+        defined in conftest.py.
+    """
+    results = test_page.run_only(rule)
+    assert len(results) == 0, test_page.report(results)

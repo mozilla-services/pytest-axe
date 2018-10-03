@@ -5,7 +5,6 @@
 
 from setuptools import setup
 
-
 with open("./README.rst", "r") as f:
     readme = f.read()
 
