@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 import json
 import os
-
 from ..parameterize_tests import *  # NOQA
 
 filename = os.path.join(os.path.dirname(__file__), "results.json")

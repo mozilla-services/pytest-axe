@@ -20,7 +20,7 @@ setup(
     install_requires=[
         "pytest-selenium>=1.12.0",
         "pytest>=3.0.0",
-        "axe_selenium_python>=2.0.6",
+        "axe_selenium_python>=2.1.1",
     ],
     entry_points={"pytest11": ["axe = pytest_axe.pytest_axe"]},
     license="Mozilla Public License 2.0 (MPL 2.0)",

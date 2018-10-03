@@ -47,3 +47,4 @@ def pytest_configure(config):
         "region": "Reason: testing",
         "td-has-header": "Reason: testing",
     }
+    pytest.config = config

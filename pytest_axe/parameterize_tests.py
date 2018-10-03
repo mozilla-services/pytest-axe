@@ -46,9 +46,9 @@ def parametrized_accessibility_rules(metafunc):
         list.append(rule["ruleId"])
     xfail_rules = metafunc.config.xfail_rules
     # Replace rule ID parameter with one containing xfail marker
-    for xfail in xfail_rules.items():
-        if xfail in list:
-            list[list.index(xfail)] = format_parameter(xfail, xfail_rules)
+    for rule, reason in xfail_rules.items():
+        if rule in list:
+            list[list.index(rule)] = format_parameter(rule, xfail_rules)
     return list
 
 

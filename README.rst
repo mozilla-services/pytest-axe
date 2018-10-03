@@ -3,25 +3,25 @@ pytest-axe
 
 pytest-axe provides a variety of features to simplify accessibility testing using ``axe-selenium-python``.
 
-.. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg?style=flat-square
+.. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg
    :target: https://github.com/mozilla-services/pytest-axe/blob/master/LICENSE.txt
    :alt: License
-.. image:: https://img.shields.io/pypi/v/pytest-axe.svg?style=flat-square
+.. image:: https://img.shields.io/pypi/v/pytest-axe.svg
    :target: https://pypi.org/project/pytest-axe/
    :alt: PyPI
-.. image:: https://img.shields.io/pypi/wheel/pytest-axe.svg?style=flat-square
+.. image:: https://img.shields.io/pypi/wheel/pytest-axe.svg
    :target: https://pypi.org/project/pytest-axe/
    :alt: wheel
-.. image:: https://img.shields.io/github/issues-raw/mozilla-services/pytest-axe.svg?style=flat-square
+.. image:: https://img.shields.io/github/issues-raw/mozilla-services/pytest-axe.svg
    :target: https://github.com/mozilla-services/pytest-axe/issues
    :alt: Issues
-.. image:: https://travis-ci.org/mozilla-services/pytest-axe.svg?style=flat-square
+.. image:: https://travis-ci.org/mozilla-services/pytest-axe.svg
    :target: https://travis-ci.org/mozilla-services/pytest-axe
    :alt: Travis
-.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/shield.svg?style=flat-square
+.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/shield.svg
    :target: https://pyup.io/repos/github/mozilla-services/pytest-axe/
    :alt: Updates
-.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/python-3-shield.svg?style=flat-square
+.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/python-3-shield.svg
    :target: https://pyup.io/repos/github/mozilla-services/pytest-axe/
    :alt: Python 3
 
