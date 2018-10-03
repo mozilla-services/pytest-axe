@@ -47,4 +47,3 @@ def pytest_configure(config):
         "region": "Reason: testing",
         "td-has-header": "Reason: testing",
     }
-    print(config.xfail_rules)

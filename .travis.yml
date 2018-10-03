@@ -7,7 +7,6 @@ cache:
     - $HOME/virtualenv/python2.7.9/lib/python2.7/site-packages
     - node_modules
 
-install: pip install -r axe_selenium_python/tests/requirements/tests.txt
 script: skip
 
 jobs:
