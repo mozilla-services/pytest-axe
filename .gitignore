@@ -4,6 +4,7 @@ build/
 dist/
 *.egg
 __pycache__
+*.pyc
 *.json
 *.log
 *.html
