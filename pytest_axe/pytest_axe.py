@@ -120,16 +120,11 @@ class PytestAxe(Axe):
 
         return violations
 
-    def run_only(self, rule):
+    def run_single_rule(self, rule):
         self.inject()
-        run_only_rule = '{runOnly:{type: "rule", values: ["' + rule + '"]}}'
-        data = self.execute(self.context, run_only_rule)
-        violations = dict(
-            (rule["id"], rule)
-            for rule in data["violations"]
-            if self.impact_included(rule)
-        )
-        return violations
+        options = '{runOnly:{type: "rule", values: ["' + rule + '"]}}'
+        self.options = options
+        return self.run()
 
     def impact_included(self, rule):
         """Filter violations with specified impact level or higher."""
