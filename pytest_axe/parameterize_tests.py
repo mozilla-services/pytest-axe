@@ -52,12 +52,6 @@ def parametrized_accessibility_rules(metafunc):
     return list
 
 
-def axe_run_only(rule):
-    """Run only one rule at a time."""
-    command = '{runOnly:{type: "rule", values: ["' + rule + '"]}}'
-    return "return axe.run(" + command + ")"
-
-
 def pytest_generate_tests(metafunc):
     """Generate test cases from the formatted parameters."""
     rules = parametrized_accessibility_rules(metafunc)
