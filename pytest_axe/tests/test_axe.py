@@ -36,5 +36,5 @@ def test_parameterize_tests(rule, test_page):
         Test that parameterized tests xfail correctly, based on xfail_rules
         defined in conftest.py.
     """
-    results = test_page.run_only(rule)
+    results = test_page.run_single_rule(rule)
     assert len(results) == 0, test_page.report(results)
