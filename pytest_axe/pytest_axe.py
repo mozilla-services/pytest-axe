@@ -53,9 +53,7 @@ def run_axe(page, context=None, options=None, impact=None):
 
 
 class PytestAxe(Axe):
-    def __init__(
-        self, selenium, script_url=None, context=None, options=None, impact=None
-    ):
+    def __init__(self, selenium, context=None, options=None, impact=None):
         super(PytestAxe, self).__init__(selenium)
         self.context = context
         self.options = options
@@ -120,16 +118,11 @@ class PytestAxe(Axe):
 
         return violations
 
-    def run_only(self, rule):
+    def run_single_rule(self, rule):
         self.inject()
-        run_only_rule = '{runOnly:{type: "rule", values: ["' + rule + '"]}}'
-        data = self.execute(self.context, run_only_rule)
-        violations = dict(
-            (rule["id"], rule)
-            for rule in data["violations"]
-            if self.impact_included(rule)
-        )
-        return violations
+        options = '{runOnly:{type: "rule", values: ["' + rule + '"]}}'
+        self.options = options
+        return self.run()
 
     def impact_included(self, rule):
         """Filter violations with specified impact level or higher."""

@@ -22,29 +22,3 @@ def test_page():
 
     yield axe
     driver.close()
-
-
-def pytest_configure(config):
-    """
-        Included rule ID of tests that are expected to fail as a key, with the
-        github issue number as a value (or any other desired info as
-        reason for failure), and pass to pytestconfig to generate the tests.
-
-        Example:
-            config.xfail_rules = {
-                "meta-viewport": "Reason: GitHub issue #245"
-            }
-    """
-    config.xfail_rules = {
-        "bypass": "Reason: testing",
-        "color-contrast": "Reason: testing",
-        "html-has-lang": "Reason: testing",
-        "image-alt": "Reason: testing",
-        "label": "Reason: testing",
-        "landmark-one-main": "Reason: testing",
-        "link-in-text-block": "Reason: testing",
-        "page-has-heading-one": "Reason: testing",
-        "region": "Reason: testing",
-        "td-has-header": "Reason: testing",
-    }
-    pytest.config = config
