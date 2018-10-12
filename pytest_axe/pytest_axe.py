@@ -14,10 +14,7 @@ from axe_selenium_python import Axe
 # It adds complexity, and can only be applied to specific use cases.
 @pytest.fixture
 def axe(selenium, base_url):
-    """
-        Return an Axe instance based on context and options, to perform
-        accessibility audits using Selenium WebDriver.
-    """
+    """Return an Axe instance to perform accessibility audits."""
     if base_url:
         selenium.get(base_url)
     yield PytestAxe(selenium)
@@ -28,12 +25,15 @@ def axe(selenium, base_url):
 # that can enable or disable accessibility tests and writing the results to
 # file. If I keep this --axe flag, the aforementioned checks should be removed.
 def pytest_addoption(parser):
+    """Add command line option to filter run only accessibility tests."""
     parser.addoption(
         "--axe", action="store_true", default=False, help="run accessibility tests only"
     )
 
 
 def pytest_collection_modifyitems(config, items):
+    """Filter tests based on presence or absence of axe flag."""
+    # TODO: figure out why reasons aren't printed when tests are skipped
     if config.getoption("--axe"):
         # --axe in cli: run accessibility tests and skip others
         skip_not_a11y = pytest.mark.skip(reason="run accessibility tests only.")
@@ -47,13 +47,9 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(skip_a11y)
 
 
-def run_axe(page, context=None, options=None, impact=None):
-    axe = PytestAxe(page.selenium, None, context, options, impact)
-    axe.analyze()
-
-
 class PytestAxe(Axe):
     def __init__(self, selenium, context=None, options=None, impact=None):
+        """Instantiate Axe instance and set attributes."""
         super(PytestAxe, self).__init__(selenium)
         self.context = context
         self.options = options
@@ -119,6 +115,7 @@ class PytestAxe(Axe):
         return violations
 
     def run_single_rule(self, rule):
+        """Configure options and run audit for a single accessibility rule."""
         self.inject()
         options = '{runOnly:{type: "rule", values: ["' + rule + '"]}}'
         self.options = options

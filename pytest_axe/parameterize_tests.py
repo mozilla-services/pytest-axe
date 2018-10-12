@@ -27,7 +27,7 @@ def axe_core_get_rules():
     return rules
 
 
-def parametrized_accessibility_rules(xfail_rules):
+def parametrized_accessibility_rules(xfail_rules={}):
     """
         Get list of accessibility rules and modify it to xfail test cases as
         defined in the xfail_rules attribute of the pytest config object.
@@ -44,7 +44,6 @@ def parametrized_accessibility_rules(xfail_rules):
     # Make a list containing only rule IDs.
     for rule in rules:
         list.append(rule["ruleId"])
-    # xfail_rules = metafunc.config.xfail_rules
     # Replace rule ID parameter with one containing xfail marker
     for rule, reason in xfail_rules.items():
         if rule in list:
@@ -54,7 +53,10 @@ def parametrized_accessibility_rules(xfail_rules):
 
 def pytest_generate_tests(metafunc):
     """Generate test cases from the formatted parameters."""
-    # add check for null params
-    rules = parametrized_accessibility_rules(metafunc.cls.params)
+    rules = (
+        parametrized_accessibility_rules(metafunc.cls.params)
+        if hasattr(metafunc.cls, "params")
+        else parametrized_accessibility_rules()
+    )
     if "rule" in metafunc.funcargnames:
         metafunc.parametrize("rule", rules)
