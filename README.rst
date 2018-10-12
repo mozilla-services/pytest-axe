@@ -110,31 +110,10 @@ Parameterized Tests and Expected Failures
 As of version 1.1.0, ``pytest-axe`` provides helper methods to generate individual tests for
 each accessibility rule.
 
-Usage Example
-"""""""""""""
-
-.. code-block::python
-  from selenium import webdriver
-  from axe_selenium_python.axe import Axe
-  from pytest_axe.parametrize_tests import *
-
-
-  @pytest.mark.accessibility
-  def test_home_page_accessibility(rule):
-      """Run accessibility audits on the home page."""
-      driver = webdriver.Firefox()
-      driver.get("https://firefox.com")
-      axe = Axe(driver)
-      axe.inject()
-
-      results = driver.execute_script(axe_run_only(rule))
-      assert len(results["violations"]) == 0
-
-Expected Failures
-"""""""""""""""""
 Generating test cases for each accessibility rule enables the ability to
-mark specific **rules** as expected failures. You must configure this in the
-``conftest.py`` file in your test suite.
+mark specific **rules** as expected failures. To enable test parameterization,
+parameterized tests should be defined in separate classes, with xfailed rules
+set in the class-level `params` dictionary.
 
 
 Example
@@ -142,20 +121,31 @@ Example
 
 .. code-block::python
   import pytest
+  from selenium import webdriver
+  from pytest_axe.pytest_axe import PytestAxe as Axe
+  from pytest_axe.parametrize_tests import *
 
+  class TestHomePageAccessibility(object):
+      params = {
+          # Used by pytest-axe to generate tests and configure xfails
+          "color-contrast": "Reason: GitHub issue #5014 https://github.com/mozilla-services/screenshots/issues/5014",
+          "html-has-lang": "Reason: GitHub issue #5015 https://github.com/mozilla-services/screenshots/issues/5015",
+          "landmark-one-main": "Reason: GitHub issue #5016 https://github.com/mozilla-services/screenshots/issues/5016",
+          "link-name": "Reason: GitHub issue #5017 https://github.com/mozilla-services/screenshots/issues/5017",
+          "meta-viewport": "Reason: GitHub issue #5018 https://github.com/mozilla-services/screenshots/issues/5018",
+          "region": "Reason: GitHub issue #5016 https://github.com/mozilla-services/screenshots/issues/5016",
+      }
 
-  def pytest_configure(config):
-      """
-        Included rule ID of tests that are expected to fail as a key, with the
-        github issue number as a value (or any other desired info as
-        reason for failure), and pass to pytestconfig to generate the tests.
+      @pytest.mark.accessibility
+      def test_home_page_accessibility(self, rule):
+          """Run accessibility audits on the home page of Screenshots."""
+          driver = webdriver.Firefox()
+          driver.get("https://firefox.com")
+          axe = Axe(driver)
+          axe.inject()
 
-        Example:
-            config.xfail_rules = {
-                'meta-viewport': '#245'
-            }
-      """
-      config.xfail_rules = {"meta-viewport": "#245"}
+          results = axe.run_single_rule(rule)
+          assert len(results) == 0, home_page.report(results)
 
 PyPOM Example
 ^^^^^^^^^^^^^^^^^^^^^
@@ -201,6 +191,10 @@ Resources
 
 CHANGELOG
 ----------
+
+Version 1.1.3
+^^^^^^^^^^^^^
+- Modified the way that tests are generated. Rather than configuring xfails in conftest.py, they are defined as class-level variables.
 
 Version 1.1.0
 ^^^^^^^^^^^^^

@@ -9,13 +9,18 @@ from selenium import webdriver
 
 from ..pytest_axe import PytestAxe as Axe
 
-base_url = os.path.join(os.path.dirname(__file__), "index.html")
+path_to_test_page_with_violations = os.path.join(
+    os.path.dirname(__file__), "violations.html"
+)
+path_to_test_page_no_violations = os.path.join(
+    os.path.dirname(__file__), "no_violations.html"
+)
 
 
 @pytest.fixture(scope="session", autouse=True)
-def test_page():
+def test_page_with_violations():
     driver = webdriver.Firefox()
-    driver.get("file://" + base_url)
+    driver.get("file://" + path_to_test_page_with_violations)
 
     axe = Axe(driver)
     axe.inject()
@@ -24,27 +29,13 @@ def test_page():
     driver.close()
 
 
-def pytest_configure(config):
-    """
-        Included rule ID of tests that are expected to fail as a key, with the
-        github issue number as a value (or any other desired info as
-        reason for failure), and pass to pytestconfig to generate the tests.
+@pytest.fixture(scope="session", autouse=True)
+def test_page_no_violations():
+    driver = webdriver.Firefox()
+    driver.get("file://" + path_to_test_page_no_violations)
 
-        Example:
-            config.xfail_rules = {
-                "meta-viewport": "Reason: GitHub issue #245"
-            }
-    """
-    config.xfail_rules = {
-        "bypass": "Reason: testing",
-        "color-contrast": "Reason: testing",
-        "html-has-lang": "Reason: testing",
-        "image-alt": "Reason: testing",
-        "label": "Reason: testing",
-        "landmark-one-main": "Reason: testing",
-        "link-in-text-block": "Reason: testing",
-        "page-has-heading-one": "Reason: testing",
-        "region": "Reason: testing",
-        "td-has-header": "Reason: testing",
-    }
-    pytest.config = config
+    axe = Axe(driver)
+    axe.inject()
+
+    yield axe
+    driver.close()
