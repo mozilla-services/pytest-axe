@@ -18,9 +18,9 @@ pytest-axe provides a variety of features to simplify accessibility testing usin
 .. image:: https://travis-ci.org/mozilla-services/pytest-axe.svg
    :target: https://travis-ci.org/mozilla-services/pytest-axe
    :alt: Travis
-.. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/shield.svg
-   :target: https://pyup.io/repos/github/mozilla-services/pytest-axe/
-   :alt: Updates
+.. image:: https://api.dependabot.com/badges/status?host=github&repo=mozilla-services/axe-selenium-python
+   :target: https://dependabot.com
+   :alt: Dependabot
 .. image:: https://pyup.io/repos/github/mozilla-services/pytest-axe/python-3-shield.svg
    :target: https://pyup.io/repos/github/mozilla-services/pytest-axe/
    :alt: Python 3
