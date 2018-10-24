@@ -143,7 +143,7 @@ class PytestAxe(Axe):
         # Format file name based on page title and current datetime.
         t = time.strftime("%m_%d_%Y_%H:%M:%S")
         title = self.selenium.title
-        title = re.sub("[\s\W]", "-", title)
+        title = re.sub(r"[\s\W]", "-", title)
         title = re.sub("(-|_)+", "-", title)
 
         # Output results only if reporting is enabled.
