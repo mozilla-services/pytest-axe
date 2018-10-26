@@ -30,6 +30,7 @@ You will need the following prerequisites in order to use pytest-axe:
 - Python 2.7 or 3.6
 - axe-selenium-python >= 2.1.1
 - The appropriate driver for the browser you intend to use, downloaded and added to your path, e.g. geckodriver for Firefox:
+
   - `geckodriver <https://github.com/mozilla/geckodriver/releases>`_ downloaded and `added to your PATH <https://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path#answer-40208762>`_
 
 Optional
@@ -67,7 +68,7 @@ The following example will run aXe-core against the entire page, and check for v
 
 .. code-block:: python
 
-   import pytest
+    import pytest
 
     @pytest.mark.nondestructive
     def test_header_accessibility(axe):
@@ -78,7 +79,7 @@ You can also customize your accessibility tests by defining ``context``, ``optio
 
 .. code-block:: python
 
-   import pytest
+    import pytest
 
     @pytest.mark.nondestructive
     def test_header_accessibility(axe):
@@ -116,58 +117,58 @@ set in the class-level `params` dictionary.
 Example
 *******
 
-.. code-block::python
-  import pytest
-  from selenium import webdriver
-  from pytest_axe.pytest_axe import PytestAxe as Axe
-  from pytest_axe.parametrize_tests import *
+.. code-block:: python
+    import pytest
+    from selenium import webdriver
+    from pytest_axe.pytest_axe import PytestAxe as Axe
+    from pytest_axe.parametrize_tests import *
 
-  class TestHomePageAccessibility(object):
-      params = {
-          # Used by pytest-axe to generate tests and configure xfails
-          "color-contrast": "Reason: GitHub issue #5014 https://github.com/mozilla-services/screenshots/issues/5014",
-          "html-has-lang": "Reason: GitHub issue #5015 https://github.com/mozilla-services/screenshots/issues/5015",
-          "landmark-one-main": "Reason: GitHub issue #5016 https://github.com/mozilla-services/screenshots/issues/5016",
-          "link-name": "Reason: GitHub issue #5017 https://github.com/mozilla-services/screenshots/issues/5017",
-          "meta-viewport": "Reason: GitHub issue #5018 https://github.com/mozilla-services/screenshots/issues/5018",
-          "region": "Reason: GitHub issue #5016 https://github.com/mozilla-services/screenshots/issues/5016",
-      }
+    class TestHomePageAccessibility(object):
+        params = {
+            # Used by pytest-axe to generate tests and configure xfails
+            "color-contrast": "Reason: GitHub issue #5014 https://github.com/mozilla-services/screenshots/issues/5014",
+            "html-has-lang": "Reason: GitHub issue #5015 https://github.com/mozilla-services/screenshots/issues/5015",
+            "landmark-one-main": "Reason: GitHub issue #5016 https://github.com/mozilla-services/screenshots/issues/5016",
+            "link-name": "Reason: GitHub issue #5017 https://github.com/mozilla-services/screenshots/issues/5017",
+            "meta-viewport": "Reason: GitHub issue #5018 https://github.com/mozilla-services/screenshots/issues/5018",
+            "region": "Reason: GitHub issue #5016 https://github.com/mozilla-services/screenshots/issues/5016",
+        }
 
-      @pytest.mark.accessibility
-      def test_home_page_accessibility(self, rule):
-          """Run accessibility audits on the home page of Screenshots."""
-          driver = webdriver.Firefox()
-          driver.get("https://firefox.com")
-          axe = Axe(driver)
-          axe.inject()
+        @pytest.mark.accessibility
+        def test_home_page_accessibility(self, rule):
+            """Run accessibility audits on the home page of Screenshots."""
+            driver = webdriver.Firefox()
+            driver.get("https://firefox.com")
+            axe = Axe(driver)
+            axe.inject()
 
-          results = axe.run_single_rule(rule)
-          assert len(results) == 0, home_page.report(results)
+            results = axe.run_single_rule(rule)
+            assert len(results) == 0, home_page.report(results)
 
 PyPOM Example
 ^^^^^^^^^^^^^^^^^^^^^
 
 **These examples are dependent on the use of** `PyPOM <https://github.com/mozilla/PyPOM>`_ **, and assumes any** ``Page`` **object has a** ``selenium`` **object attribute.**
 
-.. code-block::python
-  from pytest_axe.pytest_axe import run_axe
+.. code-block:: python
+    from pytest_axe.pytest_axe import run_axe
 
 
-  @pytest.mark.accessibility
-  def test_login_page_accessibility(login_page):
-    """Test login page for accessibility violations."""
-    run_axe(login_page)
+    @pytest.mark.accessibility
+    def test_login_page_accessibility(login_page):
+      """Test login page for accessibility violations."""
+      run_axe(login_page)
 
 And with custom run options:
 
-.. code-block::python
-  from pytest_axe.pytest_axe import run_axe
+.. code-block:: python
+    from pytest_axe.pytest_axe import run_axe
 
 
-  @pytest.mark.accessibility
-  def test_login_page_accessibility(login_page):
-      """Test login page header for critical accessibility violations."""
-      run_axe(login_page, "header", None, "critical")
+    @pytest.mark.accessibility
+    def test_login_page_accessibility(login_page):
+        """Test login page header for critical accessibility violations."""
+        run_axe(login_page, "header", None, "critical")
 
 Recording Results
 ^^^^^^^^^^^^^^^^^^^
