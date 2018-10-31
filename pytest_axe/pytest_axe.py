@@ -102,10 +102,10 @@ class PytestAxe(Axe):
         response = self.selenium.execute_script("return axe.getRules();")
         return response
 
-    def run(self):
+    def run_and_return_violations(self):
         """Inject aXe, run against current page, and return rules & violations."""
         self.inject()
-        data = self.execute(self.context, self.options)
+        data = self.run(self.context, self.options)
         violations = dict(
             (rule["id"], rule)
             for rule in data["violations"]
@@ -136,7 +136,7 @@ class PytestAxe(Axe):
         else:
             return False
 
-    def analyze(self):
+    def run_tests_and_write_violations_to_file(self):
         """Run aXe accessibility checks, and write results to file."""
         violations = self.run()
 
