@@ -27,7 +27,7 @@ class TestPytestAxe(object):
 
     def test_report(self, test_page_with_violations):
         """Test that report method returns a non-empty string."""
-        violations = test_page_with_violations.run()
+        violations = test_page_with_violations.run_and_return_violations()
         report = test_page_with_violations.report(violations)
         assert report is not None
 
@@ -38,7 +38,7 @@ class TestPytestAxe(object):
 
     def test_run(self, base_url, test_page_with_violations):
         """Assert that run method returns a non-empty dictionary."""
-        violations = test_page_with_violations.run()
+        violations = test_page_with_violations.run_and_return_violations()
         assert violations is not None
 
     def test_xfail_parameterized_tests(self, rule, test_page_with_violations):
