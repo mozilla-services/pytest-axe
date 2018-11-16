@@ -102,10 +102,10 @@ class PytestAxe(Axe):
         response = self.selenium.execute_script("return axe.getRules();")
         return response
 
-    def run(self):
+    def run_and_return_violations(self):
         """Inject aXe, run against current page, and return rules & violations."""
         self.inject()
-        data = self.execute(self.context, self.options)
+        data = self.run(self.context, self.options)
         violations = dict(
             (rule["id"], rule)
             for rule in data["violations"]
@@ -119,7 +119,7 @@ class PytestAxe(Axe):
         self.inject()
         options = '{runOnly:{type: "rule", values: ["' + rule + '"]}}'
         self.options = options
-        return self.run()
+        return self.run_and_return_violations()
 
     def impact_included(self, rule):
         """Filter violations with specified impact level or higher."""
@@ -136,9 +136,9 @@ class PytestAxe(Axe):
         else:
             return False
 
-    def analyze(self):
+    def run_tests_and_write_violations_to_file(self):
         """Run aXe accessibility checks, and write results to file."""
-        violations = self.run()
+        violations = self.run_and_return_violations()
 
         # Format file name based on page title and current datetime.
         t = time.strftime("%m_%d_%Y_%H:%M:%S")
