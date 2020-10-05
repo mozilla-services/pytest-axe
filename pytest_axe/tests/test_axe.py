@@ -41,6 +41,11 @@ class TestPytestAxe(object):
         violations = test_page_with_violations.run_and_return_violations()
         assert violations is not None
 
+    def test_run_return_axe_results(self, base_url, test_page_with_violations):
+        """Assert that run method returns a non-empty dictionary."""
+        axe_results = test_page_with_violations.run_and_return_axe_results()
+        assert axe_results is not None
+
     def test_xfail_parameterized_tests(self, rule, test_page_with_violations):
         """
             Test that parameterized tests xfail correctly, based on class-level
