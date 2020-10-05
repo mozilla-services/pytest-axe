@@ -114,6 +114,11 @@ class PytestAxe(Axe):
 
         return violations
 
+    def run_and_return_axe_results(self):
+        """Inject aXe, run against current page, and return axe results."""
+        self.inject()
+        return self.run(self.context, self.options)
+
     def run_single_rule(self, rule):
         """Configure options and run audit for a single accessibility rule."""
         self.inject()
